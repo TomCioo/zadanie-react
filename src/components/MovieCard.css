@@ -1,0 +1,50 @@
+.movie-card {
+  background-color: lightgray;
+  border: 1px solid black;
+  padding: 15px;
+  border-radius: 10px;
+}
+
+.movie-card h2 {
+  color: black;
+}
+
+.movie-card p {
+  color: #555;
+}
+
+.movie-card button {
+  background-color: black;
+  color: white;
+  border: none;
+  padding: 8px 12px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.movie-card button:hover {
+  background-color: rgba(55, 60, 65, 0.134);
+}
+
+.movie-card button:disabled {
+  background-color: green;
+  cursor: default;
+}
+
+.movie-card button.selected{
+  background-color: rgba(216, 187, 18, 0.707);
+  cursor: default;
+}
+
+.stars button {
+  background: none;
+  border: none;
+  font-size: 35px;
+  color: rgb(113, 107, 41);
+  cursor: pointer;
+}
+
+.stars button.selected {
+  color: gold;
+  background: none;
+}
