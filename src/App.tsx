@@ -8,7 +8,7 @@ function App() {
   const [filtr, setFiltr] = useState("wszystkie");
   const [oceny, setOceny] = useState<Record<number, number>>({});
 
-  function dodajDoObejrzanych(id) {
+  function dodajDoObejrzanych(id : number) {
     setObejrzane((poprzednie) => {
       if (poprzednie.includes(id)) {
         return poprzednie;
@@ -34,11 +34,11 @@ function App() {
     setObejrzane([]);
   }
 
-  function dodajOcene(id,ocena){
+  function dodajOcene(id : number,ocena : number){
       setOceny((poprzednie) => ({...poprzednie,[id]: ocena}));
   }
 
-  function usunOcene(id) {
+  function usunOcene(id : number) {
     setOceny((poprzednie) => {
     const noweOceny = { ...poprzednie };
     delete noweOceny[id];
@@ -82,7 +82,7 @@ function App() {
               genre={movie.genre}
               czyObejrzane={obejrzane.includes(movie.id)}
               dodajDoObejrzanych={() => dodajDoObejrzanych(movie.id)}
-              ocenFilm={(ocena) => dodajOcene(movie.id, ocena)}
+              ocenFilm={(ocena : number) => dodajOcene(movie.id, ocena)}
               ocena={oceny[movie.id]}
               usunOcene={() => usunOcene(movie.id)}
             />

@@ -1,6 +1,17 @@
 import "./MovieCard.css";
 
-function MovieCard(props) {
+interface MovieCardProps {
+  title: string;
+  year: number;
+  genre: string;
+  ocena: number;
+  ocenFilm: (ocena: number) => void;
+  usunOcene: () => void;
+  czyObejrzane: boolean;
+  dodajDoObejrzanych: () => void;
+}
+
+function MovieCard(props : MovieCardProps) {
   return (
     <div className="movie-card">
       <h2>{props.title}</h2>
