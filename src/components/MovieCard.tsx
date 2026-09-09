@@ -4,14 +4,15 @@ interface MovieCardProps {
   title: string;
   year: number;
   genre: string;
-  ocena: number;
+  ocena?: number;
   ocenFilm: (ocena: number) => void;
-  usunOcene: () => void;
   czyObejrzane: boolean;
   dodajDoObejrzanych: () => void;
 }
 
-function MovieCard(props : MovieCardProps) {
+function MovieCard(props: MovieCardProps) {
+  const gwiazdki = [1, 2, 3, 4, 5];
+
   return (
     <div className="movie-card">
       <h2>{props.title}</h2>
@@ -25,26 +26,38 @@ function MovieCard(props : MovieCardProps) {
       </p>
 
       <div className="stars">
-      <p>Oceń film:
-      <button onClick={() => props.ocenFilm(1)} className={props.ocena >= 1 ? "selected" : ""}>★</button>
-      <button onClick={() => props.ocenFilm(2)} className={props.ocena >= 2 ? "selected" : ""}>★</button>
-      <button onClick={() => props.ocenFilm(3)} className={props.ocena >= 3 ? "selected" : ""}>★</button>
-      <button onClick={() => props.ocenFilm(4)} className={props.ocena >= 4 ? "selected" : ""}>★</button>
-      <button onClick={() => props.ocenFilm(5)} className={props.ocena >= 5 ? "selected" : ""}>★</button>
-      </p>
-    </div>
-    {props.ocena && (
-    <div>
-    <p>Twoja ocena: {props.ocena}/5
-    <button onClick={props.usunOcene}>
-       Usuń ocenę
-    </button>
-    </p>
-    </div>
-    )}
+        <p>
+          Oceń film:
 
-      <button className={props.czyObejrzane ? "watched" : ""} onClick={props.dodajDoObejrzanych} disabled={props.czyObejrzane}>
-        {props.czyObejrzane ? "Obejrzane" : "Dodaj do obejrzanych"}
+          {gwiazdki.map((gwiazdka) => (
+            <button
+              key={gwiazdka}
+              onClick={() => props.ocenFilm(gwiazdka)}
+              className={
+                props.ocena && props.ocena >= gwiazdka
+                  ? "selected"
+                  : ""
+              }
+            >
+              ★
+            </button>
+          ))}
+        </p>
+      </div>
+
+      {props.ocena && (
+        <p>
+          Twoja ocena: {props.ocena}/5
+        </p>
+      )}
+
+      <button
+        className={props.czyObejrzane ? "watched" : ""}
+        onClick={props.dodajDoObejrzanych}
+      >
+        {props.czyObejrzane
+          ? "Usuń z obejrzanych"
+          : "Dodaj do obejrzanych"}
       </button>
     </div>
   );

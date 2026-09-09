@@ -3,18 +3,34 @@ import "./App.css";
 import movies from "./data/movies.json";
 import MovieCard from "./components/MovieCard";
 
+type Filtr = "wszystkie" | "obejrzane" | "nieobejrzane";
+
 function App() {
   const [obejrzane, setObejrzane] = useState<number[]>([]);
-  const [filtr, setFiltr] = useState("wszystkie");
+  const [filtr, setFiltr] = useState<Filtr>("wszystkie");
   const [oceny, setOceny] = useState<Record<number, number>>({});
 
-  function dodajDoObejrzanych(id : number) {
+  function przelaczObejrzane(id: number) {
     setObejrzane((poprzednie) => {
       if (poprzednie.includes(id)) {
-        return poprzednie;
+        return poprzednie.filter((movieId) => movieId !== id);
       }
 
       return [...poprzednie, id];
+    });
+  }
+
+  function obsluzOcene(id: number, ocena: number) {
+    setOceny((poprzednie) => {
+      if (poprzednie[id] === ocena) {
+        const noweOceny = { ...poprzednie };
+        delete noweOceny[id];
+        return noweOceny;
+      }
+
+      return {
+        ...poprzednie,[id]: ocena
+      };
     });
   }
 
@@ -32,20 +48,8 @@ function App() {
 
   function wyczysc() {
     setObejrzane([]);
+    setOceny({})
   }
-
-  function dodajOcene(id : number,ocena : number){
-      setOceny((poprzednie) => ({...poprzednie,[id]: ocena}));
-  }
-
-  function usunOcene(id : number) {
-    setOceny((poprzednie) => {
-    const noweOceny = { ...poprzednie };
-    delete noweOceny[id];
-    return noweOceny;
-  });
-}
-
 
   return (
     <>
@@ -67,28 +71,32 @@ function App() {
         </button>
 
         <button onClick={wyczysc}>
-          Wyczysc    </button>
+          Wyczyść
+        </button>
       </div>
 
-       {filtruj.length === 0 ? (
+      {filtruj.length === 0 ? (
         <p>Brak filmów do wyświetlenia.</p>
       ) : (
-      <ul>
-        {filtruj.map((movie) => (
-          <li key={movie.id}>
-            <MovieCard
-              title={movie.title}
-              year={movie.year}
-              genre={movie.genre}
-              czyObejrzane={obejrzane.includes(movie.id)}
-              dodajDoObejrzanych={() => dodajDoObejrzanych(movie.id)}
-              ocenFilm={(ocena : number) => dodajOcene(movie.id, ocena)}
-              ocena={oceny[movie.id]}
-              usunOcene={() => usunOcene(movie.id)}
-            />
-          </li>
-        ))}
-      </ul>
+        <ul>
+          {filtruj.map((movie) => (
+            <li key={movie.id}>
+              <MovieCard
+                title={movie.title}
+                year={movie.year}
+                genre={movie.genre}
+                czyObejrzane={obejrzane.includes(movie.id)}
+                dodajDoObejrzanych={() =>
+                  przelaczObejrzane(movie.id)
+                }
+                ocenFilm={(ocena: number) =>
+                  obsluzOcene(movie.id, ocena)
+                }
+                ocena={oceny[movie.id]}
+              />
+            </li>
+          ))}
+        </ul>
       )}
     </>
   );
