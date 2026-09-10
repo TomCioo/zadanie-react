@@ -3,7 +3,7 @@ import "./MovieCard.css";
 interface MovieCardProps {
   title: string;
   year: number;
-  genre: string;
+  genre: string[];
   ocena?: number;
   ocenFilm: (ocena: number) => void;
   czyObejrzane: boolean;

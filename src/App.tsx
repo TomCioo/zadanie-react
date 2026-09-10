@@ -2,10 +2,12 @@ import { useState } from "react";
 import "./App.css";
 import movies from "./data/movies.json";
 import MovieCard from "./components/MovieCard";
+import AddMovie from "./components/AddMovie";
 
 type Filtr = "wszystkie" | "obejrzane" | "nieobejrzane";
 
 function App() {
+  const [filmy, setFilmy] = useState(movies);
   const [obejrzane, setObejrzane] = useState<number[]>([]);
   const [filtr, setFiltr] = useState<Filtr>("wszystkie");
   const [oceny, setOceny] = useState<Record<number, number>>({});
@@ -28,13 +30,11 @@ function App() {
         return noweOceny;
       }
 
-      return {
-        ...poprzednie,[id]: ocena
-      };
+      return {...poprzednie,[id]: ocena};
     });
   }
 
-  const filtruj = movies.filter((movie) => {
+  const filtruj = filmy.filter((movie) => {
     if (filtr === "obejrzane") {
       return obejrzane.includes(movie.id);
     }
@@ -48,13 +48,24 @@ function App() {
 
   function wyczysc() {
     setObejrzane([]);
-    setOceny({})
+    setOceny({});
+  }
+
+  function dodajFilm(title: string, year: number, genre: string[]) {
+    const nowyFilm = {
+      id: filmy.length + 1,
+      title: title,
+      year: year,
+      genre: genre
+    };
+
+    setFilmy([...filmy, nowyFilm]);
   }
 
   return (
     <>
       <h1>
-        Obejrzane: {obejrzane.length} / {movies.length}
+        Obejrzane: {obejrzane.length} / {filmy.length}
       </h1>
 
       <div>
@@ -74,6 +85,8 @@ function App() {
           Wyczyść
         </button>
       </div>
+
+      <AddMovie dodajFilm={dodajFilm} />
 
       {filtruj.length === 0 ? (
         <p>Brak filmów do wyświetlenia.</p>
